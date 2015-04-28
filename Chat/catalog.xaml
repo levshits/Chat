@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modularity:ModuleCatalog
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:modularity="clr-namespace:Microsoft.Practices.Prism.Modularity;assembly=Microsoft.Practices.Prism.Composition">
+    <modularity:ModuleInfo Ref="ClientChatModule.dll"
+                           ModuleName="ClientChatModule"
+                           ModuleType="ClientChatModule.ModuleDefinitions.Module, ClientChatModule, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    </modularity:ModuleInfo>
+    <modularity:ModuleInfo Ref="MessagingModule.dll"
+                           ModuleName="MessagingModule"
+                           ModuleType="MessagingModule.ModuleDefinitions.Module, MessagingModule, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <modularity:ModuleInfo.DependsOn>
+            <sys:String>ClientChatModule</sys:String>
+        </modularity:ModuleInfo.DependsOn>
+    </modularity:ModuleInfo>
+    <modularity:ModuleInfo Ref="LoginModule.dll"
+                           ModuleName="LoginModule"
+                           ModuleType="LoginModule.ModuleDefinitions.Module, LoginModule, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <modularity:ModuleInfo.DependsOn>
+            <sys:String>MessagingModule</sys:String>
+            <sys:String>ClientChatModule</sys:String>
+        </modularity:ModuleInfo.DependsOn>
+    </modularity:ModuleInfo>
+</modularity:ModuleCatalog>
