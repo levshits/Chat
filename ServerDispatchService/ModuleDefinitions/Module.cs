@@ -1,11 +1,15 @@
-﻿using ChatInterfaces;
-using ClientSpecificServices.Services;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ChatInterfaces;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
-namespace ClientSpecificServices.ModuleDefinitions
+namespace ServerDispatchService.ModuleDefinitions
 {
-    public class Module :IModule
+    public class Module:IModule
     {
         private readonly IUnityContainer _container;
         public Module(IUnityContainer container)
@@ -15,7 +19,7 @@ namespace ClientSpecificServices.ModuleDefinitions
 
         public void Initialize()
         {
-            _container.RegisterType<IChatService, ClientChatService>();
+            _container.RegisterType<IDispatchService, ServerDispatchService>();
         }
     }
 }

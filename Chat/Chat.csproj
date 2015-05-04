@@ -143,9 +143,9 @@
       <Project>{faf9e680-634d-4824-b8ea-e606ecc56802}</Project>
       <Name>ChatInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ClientChatModule\ClientChatModule.csproj">
+    <ProjectReference Include="..\ClientChatModule\ClientSpecificServices.csproj">
       <Project>{940883c7-bed3-4468-957a-ef4663e98010}</Project>
-      <Name>ClientChatModule</Name>
+      <Name>ClientSpecificServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\LoginModule\LoginModule.csproj">
       <Project>{90312336-3dc0-4f67-a2ab-a2a62a8a3ef7}</Project>

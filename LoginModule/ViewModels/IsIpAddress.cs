@@ -10,7 +10,6 @@ namespace LoginModule.ViewModels
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            var result = new ValidationResult(false, null);
             String address = value as string;
             if (address != null)
             {

@@ -52,16 +52,23 @@ namespace LoginModule.ViewModels
             }
         }
 
-        public ICommand LoginCommand { get{
-            if (_loginCommand == null)
+        [NotNull]
+        public ICommand LoginCommand { get
+        {
+            return _loginCommand ??
+                   (_loginCommand =
+                       new DelegateCommand(
+                           () =>
+                           {
+                               _regionManager.RequestNavigate("WindowRegion", new Uri("MainView", UriKind.Relative));
+                           }));
+        }
+            private set
             {
-                _loginCommand = new DelegateCommand(() =>
-                {
-                    _regionManager.RequestNavigate("WindowRegion", new Uri("MainView", UriKind.Relative));
-                });
+                if (value == null) throw new ArgumentNullException("value");
+                _loginCommand = value;
             }
-            return _loginCommand;
-        } private set { _loginCommand = value; } }
+        }
 
         public LoginViewModel(IRegionManager regionManager)
         {

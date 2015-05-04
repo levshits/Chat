@@ -7,13 +7,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat", "Chat\Chat.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginModule", "LoginModule\LoginModule.csproj", "{90312336-3DC0-4F67-A2AB-A2A62A8A3EF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientChatModule", "ClientChatModule\ClientChatModule.csproj", "{940883C7-BED3-4468-957A-EF4663E98010}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientSpecificServices", "ClientChatModule\ClientSpecificServices.csproj", "{940883C7-BED3-4468-957A-EF4663E98010}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatInterfaces", "ChatInterfaces\ChatInterfaces.csproj", "{FAF9E680-634D-4824-B8EA-E606ECC56802}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingModule", "MessagingModule\MessagingModule.csproj", "{588C04AA-DA64-4F31-80AA-FAEDB07D9E68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatEntities", "ChatEntities\ChatEntities.csproj", "{D9546488-447F-43D0-9E96-04B43A1B1A86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatSocketCommunicationService", "ChatSocketService\ChatSocketCommunicationService.csproj", "{4E9AF6DA-78DD-4FA2-9237-8C84F3DCF87A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerSpecificServices", "ServerChatService\ServerSpecificServices.csproj", "{A07DE6EB-6F91-4488-A5E3-44DB3D2FB81C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{D9546488-447F-43D0-9E96-04B43A1B1A86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9546488-447F-43D0-9E96-04B43A1B1A86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9546488-447F-43D0-9E96-04B43A1B1A86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E9AF6DA-78DD-4FA2-9237-8C84F3DCF87A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E9AF6DA-78DD-4FA2-9237-8C84F3DCF87A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E9AF6DA-78DD-4FA2-9237-8C84F3DCF87A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E9AF6DA-78DD-4FA2-9237-8C84F3DCF87A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A07DE6EB-6F91-4488-A5E3-44DB3D2FB81C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A07DE6EB-6F91-4488-A5E3-44DB3D2FB81C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A07DE6EB-6F91-4488-A5E3-44DB3D2FB81C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A07DE6EB-6F91-4488-A5E3-44DB3D2FB81C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
