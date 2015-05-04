@@ -15,6 +15,7 @@ namespace ServerSpecificServices.ModuleDefinitions
 
         public void Initialize()
         {
+            _container.RegisterType<IDispatchService, ServerDispatchService>();
             _container.RegisterType<IChatService, ServerChatService>();
         }
     }

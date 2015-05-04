@@ -4,15 +4,22 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:modularity="clr-namespace:Microsoft.Practices.Prism.Modularity;assembly=Microsoft.Practices.Prism.Composition">
-    <modularity:ModuleInfo Ref="ClientChatModule.dll"
-                           ModuleName="ClientChatModule"
-                           ModuleType="ClientChatModule.ModuleDefinitions.Module, ClientChatModule, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <modularity:ModuleInfo Ref="ChatSocketCommunicationService.dll"
+                           ModuleName="ChatSocketCommunicationService"
+                           ModuleType="ChatSocketCommunicationService.ModuleDefinitions.Module, ChatSocketCommunicationService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    </modularity:ModuleInfo>
+    <modularity:ModuleInfo Ref="ClientSpecificServices.dll"
+                           ModuleName="ClientSpecificServices"
+                           ModuleType="ClientSpecificServices.ModuleDefinitions.Module, ClientSpecificServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <modularity:ModuleInfo.DependsOn>
+            <sys:String>ChatSocketCommunicationService</sys:String>
+        </modularity:ModuleInfo.DependsOn>
     </modularity:ModuleInfo>
     <modularity:ModuleInfo Ref="MessagingModule.dll"
                            ModuleName="MessagingModule"
                            ModuleType="MessagingModule.ModuleDefinitions.Module, MessagingModule, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
         <modularity:ModuleInfo.DependsOn>
-            <sys:String>ClientChatModule</sys:String>
+            <sys:String>ClientSpecificServices</sys:String>
         </modularity:ModuleInfo.DependsOn>
     </modularity:ModuleInfo>
     <modularity:ModuleInfo Ref="LoginModule.dll"
@@ -20,7 +27,7 @@
                            ModuleType="LoginModule.ModuleDefinitions.Module, LoginModule, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
         <modularity:ModuleInfo.DependsOn>
             <sys:String>MessagingModule</sys:String>
-            <sys:String>ClientChatModule</sys:String>
+            <sys:String>ClientSpecificServices</sys:String>
         </modularity:ModuleInfo.DependsOn>
     </modularity:ModuleInfo>
 </modularity:ModuleCatalog>

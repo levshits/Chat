@@ -15,6 +15,7 @@ namespace ClientSpecificServices.ModuleDefinitions
 
         public void Initialize()
         {
+            _container.RegisterType<IDispatchService, ClientDispatchService>();
             _container.RegisterType<IChatService, ClientChatService>();
         }
     }

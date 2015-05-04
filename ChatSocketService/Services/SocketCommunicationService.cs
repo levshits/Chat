@@ -1,31 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using ChatEntities;
 using ChatInterfaces;
-using ChatSocketService.Models;
-using Microsoft.Practices.Prism.Logging;
 
-namespace ChatSocketService.Services
+namespace ChatSocketCommunicationService.Services
 {
     public class SocketCommunicationService: ISocketCommunicationService 
     {
-        private readonly IDispatchService _dispatchService;
-        private volatile bool IsRunned = false;
+        private volatile bool _isRunned = false;
         private Thread _listenerThread;
         private Socket _socket;
-
-        public SocketCommunicationService(IDispatchService dispatchService)
-        {
-            _dispatchService = dispatchService;
-        }
-
+        public IDispatchService DispatchService { get; set; }
         public IPEndPoint EndPointConfiguration { get; private set; }
 
         public void Send(IPEndPoint address, CommunicationPacket packet)
@@ -38,9 +25,9 @@ namespace ChatSocketService.Services
             bool isNeedToBeInitialised = false;
 
             ///TODO  Check code for multithreadthing using
-            if (!IsRunned)
+            if (!_isRunned)
             {
-                IsRunned = true;
+                _isRunned = true;
                 isNeedToBeInitialised = true;
             }
             if (isNeedToBeInitialised)
@@ -60,7 +47,7 @@ namespace ChatSocketService.Services
         private void ListenerLoop()
         {
             _socket.Listen(10);
-            while (IsRunned)
+            while (_isRunned)
             {
                 var acceptedConnection = _socket.Accept();
                 ThreadPool.QueueUserWorkItem(ProcessAcceptedConnection, acceptedConnection);
@@ -73,7 +60,9 @@ namespace ChatSocketService.Services
             ///TODO
             /// send serialized object over socket
             CommunicationPacket packet = null;
-            _dispatchService.Dispatch(packet);
+            var _dispatchService = DispatchService;
+            if (_dispatchService != null)
+                _dispatchService.Dispatch(packet);
         }
     }
 }

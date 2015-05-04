@@ -10,6 +10,7 @@ namespace ClientSpecificServices.Services
         public ClientDispatchService(ISocketCommunicationService socketCommunicationService)
         {
             _socketCommunicationService = socketCommunicationService;
+            _socketCommunicationService.DispatchService = this;
         }
 
         public void Dispatch(CommunicationPacket packet)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.UnityExtensions;
 
@@ -12,7 +13,7 @@ namespace ChatServer
                 Microsoft.Practices.Prism.Modularity.ModuleCatalog.CreateFromXaml(new Uri(@"catalog.xaml",
                     UriKind.Relative));
         } 
-        protected override System.Windows.DependencyObject CreateShell()
+        protected override DependencyObject CreateShell()
         {
             return null;
         }

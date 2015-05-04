@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ChatInterfaces;
-using ChatSocketService.Services;
+﻿using ChatInterfaces;
+using ChatSocketCommunicationService.Services;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
-namespace ChatSocketService.ModuleDefinitions
+namespace ChatSocketCommunicationService.ModuleDefinitions
 {
-    class Module:IModule
+    public class Module:IModule
     {
         private readonly IUnityContainer _container;
 

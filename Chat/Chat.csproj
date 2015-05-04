@@ -34,13 +34,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.Prism.Composition">
+    <Reference Include="Microsoft.Practices.Prism.Composition, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism.Interactivity">
       <HintPath>..\packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Mvvm">
+    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.Mvvm.1.0.0\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop">
@@ -49,32 +51,25 @@
     <Reference Include="Microsoft.Practices.Prism.PubSubEvents">
       <HintPath>..\packages\Prism.PubSubEvents.1.0.0\lib\portable-sl4+wp7+windows8+net40\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces">
-      <HintPath>..\packages\Prism.Mvvm.1.0.0\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.UnityExtensions">
+    <Reference Include="Microsoft.Practices.Prism.UnityExtensions, Version=5.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.UnityExtensions.5.0.1\lib\NET45\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity">
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration">
-      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
-      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -143,6 +138,14 @@
       <Project>{faf9e680-634d-4824-b8ea-e606ecc56802}</Project>
       <Name>ChatInterfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ChatServer\ChatServer.csproj">
+      <Project>{9e10830a-3e8a-42b1-8c58-4f0e8cd79c97}</Project>
+      <Name>ChatServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChatSocketService\ChatSocketCommunicationService.csproj">
+      <Project>{4e9af6da-78dd-4fa2-9237-8c84f3dcf87a}</Project>
+      <Name>ChatSocketCommunicationService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ClientChatModule\ClientSpecificServices.csproj">
       <Project>{940883c7-bed3-4468-957a-ef4663e98010}</Project>
       <Name>ClientSpecificServices</Name>
@@ -155,9 +158,10 @@
       <Project>{588c04aa-da64-4f31-80aa-faedb07d9e68}</Project>
       <Name>MessagingModule</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <ProjectReference Include="..\ServerChatService\ServerSpecificServices.csproj">
+      <Project>{a07de6eb-6f91-4488-a5e3-44db3d2fb81c}</Project>
+      <Name>ServerSpecificServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

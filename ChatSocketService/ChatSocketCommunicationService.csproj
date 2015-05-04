@@ -7,8 +7,8 @@
     <ProjectGuid>{4E9AF6DA-78DD-4FA2-9237-8C84F3DCF87A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChatSocketService</RootNamespace>
-    <AssemblyName>ChatSocketService</AssemblyName>
+    <RootNamespace>ChatSocketCommunicationService</RootNamespace>
+    <AssemblyName>ChatSocketCommunicationService</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -74,6 +74,10 @@
     <ProjectReference Include="..\ChatInterfaces\ChatInterfaces.csproj">
       <Project>{FAF9E680-634D-4824-B8EA-E606ECC56802}</Project>
       <Name>ChatInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerChatService\ServerSpecificServices.csproj">
+      <Project>{a07de6eb-6f91-4488-a5e3-44db3d2fb81c}</Project>
+      <Name>ServerSpecificServices</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
