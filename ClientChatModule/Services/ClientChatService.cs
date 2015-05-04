@@ -18,10 +18,7 @@ namespace ClientSpecificServices.Services
             throw new System.NotImplementedException();
         }
 
-        public List<ChatUser> GetUsers()
-        {
-            throw new System.NotImplementedException();
-        }
+        public List<ChatUser> Users { get; private set; }
 
         public void SendMessage(ChatUser user, string msg)
         {

@@ -9,6 +9,6 @@ namespace ChatInterfaces
         void SendMessage(ChatUser user, string msg);
         void AddUser(ChatUser user);
         void RemoveUser(ChatUser user);
-        List<ChatUser> GetUsers();
+        List<ChatUser> Users { get; }
     }
 }

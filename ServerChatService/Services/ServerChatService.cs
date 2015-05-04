@@ -8,15 +8,12 @@ namespace ServerSpecificServices.Services
     public class ServerChatService:IChatService
     {
         public ChatUser ConnectionSetting { get; private set; }
-        public List<ChatUser> GetUsers()
-        {
-            throw new NotImplementedException();
-        }
-
         public void RemoveUser(ChatUser user)
         {
             throw new NotImplementedException();
         }
+
+        public List<ChatUser> Users { get; private set; }
 
         public void AddUser(ChatUser user)
         {
