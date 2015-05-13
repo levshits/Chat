@@ -10,5 +10,6 @@ namespace ChatInterfaces
         void Send(IPEndPoint address, CommunicationPacket packet);
         void Run();
         void Run(IPEndPoint endPoint);
+        void Stop();
     }
 }

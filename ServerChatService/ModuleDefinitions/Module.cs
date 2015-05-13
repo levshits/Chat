@@ -7,16 +7,16 @@ namespace ServerSpecificServices.ModuleDefinitions
 {
     public class Module:IModule
     {
-        private readonly IUnityContainer _container;
+        private readonly IUnityContainer container;
         public Module(IUnityContainer container)
         {
-            _container = container;
+            this.container = container;
         }
 
         public void Initialize()
         {
-            _container.RegisterType<IDispatchService, ServerDispatchService>();
-            _container.RegisterType<IChatService, ServerChatService>();
+            container.RegisterType<IDispatchService, ServerDispatchService>();
+            container.RegisterType<IServerChatService, ServerChatService>();
         }
     }
 }

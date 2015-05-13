@@ -1,8 +1,9 @@
 ﻿using System;
-using System.ComponentModel.Composition;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Xml.Serialization;
 using ChatEntities;
 using ChatInterfaces;
 using Microsoft.Practices.Prism.Logging;
@@ -22,7 +23,16 @@ namespace ChatSocketCommunicationService.Services
 
         public void Send(IPEndPoint address, CommunicationPacket packet)
         {
-            throw new NotImplementedException();
+            var socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+            socket.Connect(address);
+            XmlSerializer serializer = new XmlSerializer(typeof(CommunicationPacket));
+            using (var ms = new MemoryStream())
+            {
+                serializer.Serialize(ms, packet);
+                socket.Send(BitConverter.GetBytes(ms.Length));
+                socket.Send(ms.GetBuffer());
+            }
+
         }
 
         public void Run()
@@ -31,16 +41,18 @@ namespace ChatSocketCommunicationService.Services
 
             lock (DispatchService)
             {
-                if(isRunned == false)
-                isRunned = true;
-                listenerThread = new Thread(ListenerLoop);
-                socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-                if (EndPointConfiguration == null)
+                if (!isRunned)
                 {
-                    EndPointConfiguration = new IPEndPoint(IPAddress.Any, 11000);
+                    isRunned = true;
+                    listenerThread = new Thread(ListenerLoop);
+                    socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+                    if (EndPointConfiguration == null)
+                    {
+                        EndPointConfiguration = new IPEndPoint(IPAddress.Any, 11000);
+                    }
+                    socket.Bind(EndPointConfiguration);
+                    listenerThread.Start();
                 }
-                socket.Bind(EndPointConfiguration);
-                listenerThread.Start();
             }
             
         }
@@ -51,26 +63,61 @@ namespace ChatSocketCommunicationService.Services
             this.Run();
         }
 
+        public void Stop()
+        {
+            isRunned = false;
+            socket.Close();
+            listenerThread.Join();
+            Logger.Log("Server stopped", Category.Debug, Priority.Low);
+        }
+
         private void ListenerLoop()
         {
-            socket.Listen(10);
+            socket.Listen(20);
             Logger.Log("Listening was started", Category.Debug, Priority.Low);
             while (isRunned)
             {
-                var acceptedConnection = socket.Accept();
-                ThreadPool.QueueUserWorkItem(ProcessAcceptedConnection, acceptedConnection);
+                try
+                {
+                    var acceptedConnection = socket.Accept();
+                    ThreadPool.QueueUserWorkItem(ProcessAcceptedConnection, acceptedConnection);
+                }
+                catch (ThreadAbortException)
+                {
+                    Thread.ResetAbort();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(String.Format("{0} {1}", ex.Message, ex.StackTrace), Category.Exception, Priority.Low);
+                }
+                
             }
         }
 
         private void ProcessAcceptedConnection(object connection)
         {
             Socket acceptedConnection = connection as Socket;
-            ///TODO
-            /// send serialized object over socket
-            CommunicationPacket packet = null;
-            var _dispatchService = DispatchService;
-            if (_dispatchService != null)
-                _dispatchService.Dispatch(packet);
+            try
+            {
+                if (acceptedConnection != null)
+                {
+                    byte[] buffer = BitConverter.GetBytes((long) 0);
+                    acceptedConnection.Receive(buffer);
+                    buffer = new byte[BitConverter.ToInt64(buffer, 0)];
+                    int size = acceptedConnection.Receive(buffer);
+                    var serializer = new XmlSerializer(typeof (CommunicationPacket));
+                    var packet = (CommunicationPacket) serializer.Deserialize(new MemoryStream(buffer, 0, size));
+                    var dispatchService = DispatchService;
+                    if (dispatchService != null && packet != null)
+                        dispatchService.Dispatch(packet);
+                }
+                if (acceptedConnection != null && acceptedConnection.Connected)
+                    acceptedConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(String.Format("{0} {1}", ex.Message, ex.StackTrace), Category.Exception, Priority.Low);
+            }
         }
     }
 }

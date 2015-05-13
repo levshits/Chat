@@ -8,8 +8,7 @@ namespace ChatServer
         {
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.Run();
-            Console.ReadLine();
-        
+      
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿using System.Net;
-
-namespace ChatEntities
+﻿namespace ChatEntities
 {
     public class ChatUser
     {
-        public IPEndPoint IpEndPoint { get; set; }
+        public string IpAddress { get; set; }
+        public int Port { get; set; }
         public string Login { get; set; }
     }
 }

@@ -2,11 +2,11 @@
 {
     public enum PacketType
     {
-        ENTER,
-        LEAVE,
-        GET_LIST,
-        SEND_LIST,
-        MESSAGE,
-        PING
+        Enter,
+        Leave,
+        GetList,
+        SendList,
+        Message,
+        Ping
     }
 }
