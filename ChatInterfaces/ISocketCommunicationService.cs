@@ -9,5 +9,6 @@ namespace ChatInterfaces
         IPEndPoint EndPointConfiguration { get; }
         void Send(IPEndPoint address, CommunicationPacket packet);
         void Run();
+        void Run(IPEndPoint endPoint);
     }
 }

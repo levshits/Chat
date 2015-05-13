@@ -1,4 +1,6 @@
-﻿namespace ChatServer
+﻿using System;
+
+namespace ChatServer
 {
     class Program
     {
@@ -6,6 +8,8 @@
         {
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.Run();
+            Console.ReadLine();
+        
         }
     }
 }

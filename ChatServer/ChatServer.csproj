@@ -65,6 +65,10 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.2.1\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
@@ -79,9 +83,16 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\NLogILoggerFacade.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +117,10 @@
     <ProjectReference Include="..\ServerChatService\ServerSpecificServices.csproj">
       <Project>{a07de6eb-6f91-4488-a5e3-44db3d2fb81c}</Project>
       <Name>ServerSpecificServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerInitializationModule\ServerInitializationModule.csproj">
+      <Project>{de4a20c2-a53b-4942-b773-55a7b1177b6b}</Project>
+      <Name>ServerInitializationModule</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

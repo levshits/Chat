@@ -15,4 +15,12 @@
             <sys:String>ChatSocketCommunicationService</sys:String>
         </modularity:ModuleInfo.DependsOn>
     </modularity:ModuleInfo>
+    <modularity:ModuleInfo Ref="ServerInitializationModule.dll"
+                           ModuleName="ServerInitializationModule"
+                           ModuleType="ServerInitializationModule.ModuleDefinitions.Module, ServerInitializationModule, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <modularity:ModuleInfo.DependsOn>
+            <sys:String>ChatSocketCommunicationService</sys:String>
+            <sys:String>ServerSpecificServices</sys:String>
+        </modularity:ModuleInfo.DependsOn>
+    </modularity:ModuleInfo>
 </modularity:ModuleCatalog>

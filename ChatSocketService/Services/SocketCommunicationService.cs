@@ -1,17 +1,22 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using ChatEntities;
 using ChatInterfaces;
+using Microsoft.Practices.Prism.Logging;
+using Microsoft.Practices.Unity;
 
 namespace ChatSocketCommunicationService.Services
 {
     public class SocketCommunicationService: ISocketCommunicationService 
     {
-        private volatile bool _isRunned = false;
-        private Thread _listenerThread;
-        private Socket _socket;
+        private volatile bool isRunned = false;
+        private Thread listenerThread;
+        private Socket socket;
+        [Dependency]
+        public ILoggerFacade Logger { get; set; }
         public IDispatchService DispatchService { get; set; }
         public IPEndPoint EndPointConfiguration { get; private set; }
 
@@ -22,34 +27,37 @@ namespace ChatSocketCommunicationService.Services
 
         public void Run()
         {
-            bool isNeedToBeInitialised = false;
+            Logger.Log("Starting server", Category.Debug, Priority.Low);
 
-            ///TODO  Check code for multithreadthing using
-            if (!_isRunned)
+            lock (DispatchService)
             {
-                _isRunned = true;
-                isNeedToBeInitialised = true;
-            }
-            if (isNeedToBeInitialised)
-            {
-                _listenerThread = new Thread(ListenerLoop);
-                _socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+                if(isRunned == false)
+                isRunned = true;
+                listenerThread = new Thread(ListenerLoop);
+                socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
                 if (EndPointConfiguration == null)
                 {
                     EndPointConfiguration = new IPEndPoint(IPAddress.Any, 11000);
                 }
-                _socket.Bind(EndPointConfiguration);
-                _listenerThread.Start();
+                socket.Bind(EndPointConfiguration);
+                listenerThread.Start();
             }
             
         }
 
+        public void Run(IPEndPoint endPoint)
+        {
+            EndPointConfiguration = endPoint;
+            this.Run();
+        }
+
         private void ListenerLoop()
         {
-            _socket.Listen(10);
-            while (_isRunned)
+            socket.Listen(10);
+            Logger.Log("Listening was started", Category.Debug, Priority.Low);
+            while (isRunned)
             {
-                var acceptedConnection = _socket.Accept();
+                var acceptedConnection = socket.Accept();
                 ThreadPool.QueueUserWorkItem(ProcessAcceptedConnection, acceptedConnection);
             }
         }

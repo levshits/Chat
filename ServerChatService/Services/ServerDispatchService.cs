@@ -1,4 +1,5 @@
-﻿using ChatEntities;
+﻿using System;
+using ChatEntities;
 using ChatInterfaces;
 using ChatSocketService.Models;
 
@@ -6,18 +7,15 @@ namespace ServerSpecificServices.Services
 {
     public class ServerDispatchService:IDispatchService 
     {
-        private readonly ISocketCommunicationService _socketCommunicationService;
-        private readonly IChatService _serverChatService;
-
-        public ServerDispatchService(ISocketCommunicationService socketCommunicationService,
-            IChatService serverChatService)
-        {
-            _socketCommunicationService = socketCommunicationService;
-            _serverChatService = serverChatService;
-        }
+        public ISocketCommunicationService SocketCommunicationService { get; set; }
+        public IChatService ChatService { get; set; }
 
         public void Dispatch(CommunicationPacket packet)
         {
+            if (SocketCommunicationService == null || ChatService == null)
+            {
+                throw new Exception("SocketCommunication service and chat service must be setted");
+            }
             switch (packet.Type)
             {
                     case PacketType.ENTER:
@@ -38,21 +36,21 @@ namespace ServerSpecificServices.Services
         {
             var returnPacket = new CommunicationPacket()
             {
-                Content = _serverChatService.Users,
-                From = _serverChatService.ConnectionSetting.IpEndPoint,
+                Content = ChatService.Users,
+                From = ChatService.ConnectionSetting.IpEndPoint,
                 Type = PacketType.SEND_LIST
             };
-            _socketCommunicationService.Send(packet.From, returnPacket);
+            SocketCommunicationService.Send(packet.From, returnPacket);
         }
 
         private void processLeavePacket(CommunicationPacket packet)
         {
-            _serverChatService.RemoveUser(packet.Content as ChatUser);
+            ChatService.RemoveUser(packet.Content as ChatUser);
         }
 
         private void processEnterPacket(CommunicationPacket packet)
         {
-            _serverChatService.AddUser(packet.Content as ChatUser);
+            ChatService.AddUser(packet.Content as ChatUser);
         }
     }
 

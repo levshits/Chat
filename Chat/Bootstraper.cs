@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using Chat.Services;
+using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.UnityExtensions;
 
@@ -12,7 +14,12 @@ namespace Chat
             return
                 Microsoft.Practices.Prism.Modularity.ModuleCatalog.CreateFromXaml(new Uri(@"catalog.xaml",
                     UriKind.Relative));
-        } 
+        }
+
+        protected override ILoggerFacade CreateLogger()
+        {
+            return new NLogILoggerFacade();
+        }
 
         protected override DependencyObject CreateShell()
         {
