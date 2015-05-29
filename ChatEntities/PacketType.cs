@@ -1,5 +1,8 @@
-﻿namespace ChatSocketService.Models
+﻿using System;
+
+namespace ChatEntities
 {
+    [Serializable]
     public enum PacketType
     {
         Enter,

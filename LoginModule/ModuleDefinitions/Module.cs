@@ -1,4 +1,5 @@
-﻿using LoginModule.Views;
+﻿using LoginModule.ViewModels;
+using LoginModule.Views;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
@@ -7,18 +8,18 @@ namespace LoginModule.ModuleDefinitions
 {
     public class Module:IModule 
     {
-        private IUnityContainer _container;
-        private IRegionManager _regionManager;
+        private IUnityContainer container;
+        private IRegionManager regionManager;
 
         public Module(IUnityContainer container, IRegionManager regionManager)
         {
-            _container = container;
-            _regionManager = regionManager;
+            this.container = container;
+            this.regionManager = regionManager;
         }
         public void Initialize()
         {
-            _regionManager.RegisterViewWithRegion( "WindowRegion", 
-                                                       () => _container.Resolve<LoginView>());
+            regionManager.RegisterViewWithRegion( "WindowRegion", 
+                                                       () => container.Resolve<LoginView>());
         }
     }
 }

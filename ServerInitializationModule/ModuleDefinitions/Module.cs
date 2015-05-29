@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using ChatInterfaces;
 using Microsoft.Practices.Prism.Modularity;
@@ -18,7 +19,7 @@ namespace ServerInitializationModule.ModuleDefinitions
         public void Initialize()
         {
             IServerChatService serverChatService = serviceProvider.Resolve<IServerChatService>();
-            serverChatService.Start();
+            serverChatService.Start(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000 ), "Server");
             ThreadPool.QueueUserWorkItem((o) =>
             {
                 while (Console.ReadLine() != "Stop")

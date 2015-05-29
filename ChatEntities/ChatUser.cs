@@ -1,5 +1,8 @@
-﻿namespace ChatEntities
+﻿using System;
+
+namespace ChatEntities
 {
+    [Serializable]
     public class ChatUser
     {
         public string IpAddress { get; set; }

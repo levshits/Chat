@@ -2,7 +2,6 @@
 using System.Net;
 using ChatEntities;
 using ChatInterfaces;
-using ChatSocketService.Models;
 using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.Unity;
 
@@ -64,7 +63,12 @@ namespace ServerSpecificServices.Services
 
         private void ProcessEnterPacket(CommunicationPacket packet)
         {
-            ChatService.AddUser(packet.Content as ChatUser);
+            var user = packet.Content as ChatUser;
+            if (user != null)
+            {
+                user.IpAddress = packet.IpAddressFrom;
+                ChatService.AddUser(packet.Content as ChatUser);
+            }
         }
     }
 

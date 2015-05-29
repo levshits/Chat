@@ -7,27 +7,18 @@ namespace MessagingModule.ModuleDefinitions
 {
     public class Module :IModule
     {
-        private readonly IUnityContainer _unityContainer;
-        private readonly IRegionManager _regionManager;
+        private readonly IUnityContainer unityContainer;
+        private readonly IRegionManager regionManager;
 
         public Module(IUnityContainer unityContainer, IRegionManager regionManager)
         {
-            _unityContainer = unityContainer;
-            _regionManager = regionManager;
+            this.unityContainer = unityContainer;
+            this.regionManager = regionManager;
         }
 
         public void Initialize()
         {
-            _unityContainer.RegisterType<object, MainView>("MainView");
-            _regionManager.RegisterViewWithRegion("ConversationHistoryRegion", () =>
-                _unityContainer.Resolve<ConversationHistoryView>()
-                );
-            _regionManager.RegisterViewWithRegion("ClientListRegion", () =>
-                _unityContainer.Resolve<ChatClientListView>()
-                );
-            _regionManager.RegisterViewWithRegion("SendMessageRegion", () =>
-                _unityContainer.Resolve<SendMessageView>()
-                );
+            unityContainer.RegisterType<object, MessagingView>("MainView");
         }
     }
 }

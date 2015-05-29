@@ -1,8 +1,6 @@
 ﻿<UserControl x:Class="LoginModule.Views.LoginView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:LoginModule.ViewModels"
              Background="AliceBlue"
              Width="Auto" Height="Auto" MinHeight="235" MinWidth="380">
@@ -12,7 +10,7 @@
             <UniformGrid Margin="85,70,85,81">
                 <TextBox HorizontalAlignment="Left" Margin="90,0,-140,0"  VerticalAlignment="Top" Width="120" FontSize="16" MaxLength="16" MaxLines="1">
                     <TextBox.Text>
-                        <Binding Path="IpAddress" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True">
+                        <Binding Path="IpAddress" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" ValidatesOnDataErrors="True">
                             <Binding.ValidationRules>
                                 <viewModels:IsIpAddress/>
                             </Binding.ValidationRules>
@@ -25,7 +23,7 @@
                 <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, NotifyOnValidationError=True}" VerticalAlignment="Top" Width="120" FontSize="16" Margin="20,45,-70,-34"/>
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Text="Login" FontSize="16" Margin="-101,46,0,-33"/>
             </UniformGrid>
-            <Button Content="Enter" Command="{Binding LoginCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" FontSize="16" FontFamily="Segoe UI Light" BorderBrush="#FF65E22A" Background="#FFA4E435" BorderThickness="1" Margin="153,198,0,0"/>
+            <Button Command="{Binding LoginCommand}" Content="Enter" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" FontSize="16" FontFamily="Segoe UI Light" BorderBrush="#FF65E22A" Background="#FFA4E435" BorderThickness="1" Margin="153,198,0,0"/>
         </Grid>
     </Grid>
 </UserControl>

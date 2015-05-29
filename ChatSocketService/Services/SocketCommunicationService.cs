@@ -2,7 +2,9 @@
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+using System.Windows;
 using System.Xml.Serialization;
 using ChatEntities;
 using ChatInterfaces;
@@ -21,21 +23,26 @@ namespace ChatSocketCommunicationService.Services
         public IDispatchService DispatchService { get; set; }
         public IPEndPoint EndPointConfiguration { get; private set; }
 
+        public bool IsRunned
+        {
+            get { return isRunned; }
+        }
+
         public void Send(IPEndPoint address, CommunicationPacket packet)
         {
             var socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-            socket.Connect(address);
-            XmlSerializer serializer = new XmlSerializer(typeof(CommunicationPacket));
-            using (var ms = new MemoryStream())
-            {
-                serializer.Serialize(ms, packet);
-                socket.Send(BitConverter.GetBytes(ms.Length));
-                socket.Send(ms.GetBuffer());
-            }
-
+                socket.Connect(address);
+                BinaryFormatter serializer = new BinaryFormatter();
+                using (var ms = new MemoryStream())
+                {
+                    serializer.Serialize(ms, packet);
+                    socket.Send(BitConverter.GetBytes(ms.Length));
+                    socket.Send(ms.GetBuffer());
+                    Thread.Sleep(100);
+                }
         }
 
-        public void Run()
+        public void Run(bool isServerMode)
         {
             Logger.Log("Starting server", Category.Debug, Priority.Low);
 
@@ -45,22 +52,34 @@ namespace ChatSocketCommunicationService.Services
                 {
                     isRunned = true;
                     listenerThread = new Thread(ListenerLoop);
+                    if(!isServerMode)
+                        listenerThread.IsBackground = true;
                     socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
                     if (EndPointConfiguration == null)
                     {
-                        EndPointConfiguration = new IPEndPoint(IPAddress.Any, 11000);
+                        EndPointConfiguration = new IPEndPoint(IPAddress.Any, 0);
                     }
                     socket.Bind(EndPointConfiguration);
+                    EndPointConfiguration = socket.LocalEndPoint as IPEndPoint;
                     listenerThread.Start();
                 }
             }
-            
+        }
+        public void Run()
+        {
+            Run(isServerMode: false);
         }
 
         public void Run(IPEndPoint endPoint)
         {
             EndPointConfiguration = endPoint;
-            this.Run();
+            Run(isServerMode: false);
+        }
+
+        public void Run(IPEndPoint endPoint, bool isServerMode)
+        {
+            EndPointConfiguration = endPoint;
+            Run(isServerMode: isServerMode);
         }
 
         public void Stop()
@@ -105,8 +124,10 @@ namespace ChatSocketCommunicationService.Services
                     acceptedConnection.Receive(buffer);
                     buffer = new byte[BitConverter.ToInt64(buffer, 0)];
                     int size = acceptedConnection.Receive(buffer);
-                    var serializer = new XmlSerializer(typeof (CommunicationPacket));
+                    var serializer = new BinaryFormatter();
                     var packet = (CommunicationPacket) serializer.Deserialize(new MemoryStream(buffer, 0, size));
+                    IPEndPoint remoteEndPoint = acceptedConnection.RemoteEndPoint as IPEndPoint;
+                    packet.IpAddressFrom = remoteEndPoint.Address.ToString();
                     var dispatchService = DispatchService;
                     if (dispatchService != null && packet != null)
                         dispatchService.Dispatch(packet);

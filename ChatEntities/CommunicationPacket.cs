@@ -1,5 +1,4 @@
 ﻿using System;
-using ChatSocketService.Models;
 
 namespace ChatEntities
 {

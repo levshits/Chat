@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="MessagingModule.Views.MessagingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:regions="http://www.codeplex.com/CompositeWPF"
+             xmlns:entities="clr-namespace:ChatEntities;assembly=ChatEntities"
+             Background="AliceBlue" mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="248">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type entities:ChatUser}" x:Key="UserItemTemplate">
+            <Grid>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding Login}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type entities:ChatMessage}" x:Key="ChatMessageTemplate">
+        	<Grid d:DesignWidth="341" d:DesignHeight="125.88">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                    <TextBlock Text="{Binding From.Login}" HorizontalAlignment="Stretch"/>
+                    <TextBlock Text="{Binding Text}" Width="Auto"/>
+                    <TextBlock Text="{Binding To.Login}" Margin="0" Width="Auto">
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="100" />
+            <RowDefinition Height="100" MinHeight="100" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
+        <ContentControl>
+            <Grid>
+                <TextBlock Margin="10,3,10,0" TextWrapping="Wrap" Text="Messages" VerticalAlignment="Top" FontSize="16"
+                           TextAlignment="Center" FontFamily="Segoe UI Light" />
+                <ListBox Margin="3,30,3,3" ItemsSource="{Binding Messages}" Background="#8CFFFFFF" ItemTemplate="{DynamicResource ChatMessageTemplate}" />
+            </Grid>
+        </ContentControl>
+        <ContentControl Grid.Column="1">
+            <Grid>
+                <ListBox Margin="3,30,3,3" ItemsSource="{Binding Users}" SelectedItem="{Binding CurrentUser}"
+                         Background="#84FFFFFF" ItemTemplate="{DynamicResource UserItemTemplate}" />
+                <TextBlock Margin="10,3,10,0" TextWrapping="Wrap" Text="Users" VerticalAlignment="Top" FontSize="16"
+                           TextAlignment="Center" FontFamily="Segoe UI Light" />
+            </Grid>
+        </ContentControl>
+        <ContentControl Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  MinHeight="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="95" />
+                </Grid.ColumnDefinitions>
+                <TextBox Margin="3,3,3,3" TextWrapping="Wrap" Text="{Binding MessageText}" FontSize="14.667" />
+                <Button Command="{Binding SendCommand}" Content="Send" Margin="3,3,3,3" VerticalAlignment="Top" FontSize="18.667"
+                        FontFamily="Segoe UI Light" Grid.Column="1" Height="28.83" Background="#FFA4E435" />
+                <TextBlock Margin="10,0,10,27.45" TextWrapping="Wrap" Text="{Binding CurrentUser.Login}"
+                           Grid.Column="1" TextAlignment="Center" FontSize="14.667" Height="28.72"
+                           VerticalAlignment="Bottom" />
+
+            </Grid>
+        </ContentControl>
+    </Grid>
+</UserControl>

@@ -2,6 +2,7 @@
 
 namespace ChatEntities
 {
+    [Serializable]
     public class ChatMessage
     {
         public ChatUser From { get; set; }

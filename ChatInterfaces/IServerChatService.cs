@@ -6,7 +6,7 @@ namespace ChatInterfaces
     {
         void Start();
         void Start(IPEndPoint address, string login);
-        void RegisterPingResponse(string IpAddress, int port);
+        void RegisterPingResponse(string ipAddress, int port);
         void Stop();
     }
 }

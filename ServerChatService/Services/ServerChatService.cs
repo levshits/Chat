@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Security.AccessControl;
 using System.Threading;
 using ChatEntities;
 using ChatInterfaces;
-using ChatSocketService.Models;
 using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.Unity;
 
@@ -27,7 +25,7 @@ namespace ServerSpecificServices.Services
             dispatchService.SocketCommunicationService = this.socketCommunicationService;
             dispatchService.ChatService = this;
             userCheckTimer = new Timer(TimerTickHandler);
-            userCheckTimer.Change(TimeSpan.FromMinutes(3), TimeSpan.Zero);
+            userCheckTimer.Change(TimeSpan.FromMinutes(0.5), TimeSpan.Zero);
         }
 
         private List<ChatUser> pingedUsers = new List<ChatUser>();
@@ -35,21 +33,36 @@ namespace ServerSpecificServices.Services
         private void TimerTickHandler(object state)
         {
             Logger.Log("Timer tick", Category.Debug, Priority.Low);
-            var users = Users;
-            foreach (var chatUser in users)
+            pingedUsers.Clear();
+            pingedUsers.AddRange(Users);
+            lock (pingedUsers)
             {
-                socketCommunicationService.Send(new IPEndPoint(IPAddress.Parse(chatUser.IpAddress), chatUser.Port ),
-                    new CommunicationPacket
+                pingedUsers.Clear();
+                pingedUsers.AddRange(Users);
+                foreach (var chatUser in pingedUsers)
+                {
+                    try
                     {
-                        Type = PacketType.Ping,
-                        IpAddressFrom = ConnectionSetting.IpAddress,
-                        PortFrom = ConnectionSetting.Port
-                    });
+                        socketCommunicationService.Send(
+                            new IPEndPoint(IPAddress.Parse(chatUser.IpAddress), chatUser.Port),
+                            new CommunicationPacket
+                            {
+                                Type = PacketType.Ping,
+                                IpAddressFrom = ConnectionSetting.IpAddress,
+                                PortFrom = ConnectionSetting.Port
+                            });
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log(string.Format("Problem with connecting to user", chatUser.Login), Category.Info,
+                            Priority.Low);
+                    }
+                }
             }
             Thread.Yield();
-            Thread.Sleep(TimeSpan.FromSeconds(30));
-            Users = Users.Intersect(pingedUsers).ToList();
-            userCheckTimer.Change(TimeSpan.FromMinutes(5), TimeSpan.Zero);
+            Thread.Sleep(TimeSpan.FromSeconds(5));
+            Users = Users.Except(pingedUsers).ToList();
+            userCheckTimer.Change(TimeSpan.FromMinutes(0.5), TimeSpan.Zero);
         }
 
         public void Start()
@@ -59,7 +72,7 @@ namespace ServerSpecificServices.Services
 
         public void Start(IPEndPoint address, string login)
         {
-            socketCommunicationService.Run(address);
+            socketCommunicationService.Run(address, isServerMode: true);
             ConnectionSetting = new ChatUser
             {
                 IpAddress = socketCommunicationService.EndPointConfiguration.Address.ToString(),
@@ -68,12 +81,16 @@ namespace ServerSpecificServices.Services
             };
         }
 
-        public void RegisterPingResponse(string IpAddress, int port)
+        public void RegisterPingResponse(string ipAddress, int port)
         {
-            var user = Users.First(element => element.IpAddress == IpAddress && element.Port == port);
-            if (user != null)
+            lock (pingedUsers)
             {
-                pingedUsers.Add(user);
+                var user = Users.First(element => element.IpAddress == ipAddress && element.Port == port);
+                Logger.Log(string.Format("ping {0} {1}", ipAddress, port), Category.Info, Priority.Low);
+                if (user != null)
+                {
+                    pingedUsers.Remove(user);
+                }
             }
         }
 
@@ -104,7 +121,7 @@ namespace ServerSpecificServices.Services
             Logger.Log(string.Format("User added {0}", user.Login), Category.Info, Priority.Low);
         }
 
-        public void SendMessage(ChatUser user, string msg)
+        public void SendMessage(ChatUser user, ChatMessage msg)
         {
             socketCommunicationService.Send(new IPEndPoint(IPAddress.Parse(user.IpAddress), user.Port),
                 new CommunicationPacket

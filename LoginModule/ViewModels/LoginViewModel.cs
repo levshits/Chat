@@ -2,26 +2,27 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using ChatInterfaces;
 using LoginModule.Annotations;
 using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Regions;
+using Microsoft.Practices.Unity;
 
 namespace LoginModule.ViewModels
 {
-    class LoginViewModel : INotifyPropertyChanged
+    public class LoginViewModel : INotifyPropertyChanged
     {
-        private readonly IRegionManager _regionManager;
-        private string _ipAddress;
-        private int _port;
-        private string _login;
-        private ICommand _loginCommand;
+        private readonly IUnityContainer container;
+        private string ipAddress;
+        private int port;
+        private string login;
+        private ICommand loginCommand;
 
         public string IpAddress
         {
-            get { return _ipAddress; }
+            get { return ipAddress; }
             set
             {
-                _ipAddress = value;
+                ipAddress = value;
                 OnPropertyChanged();
             }
         }
@@ -30,11 +31,11 @@ namespace LoginModule.ViewModels
         {
             get
             {
-                return _port;
+                return port;
             }
             set
             {
-                _port = value;
+                port = value;
                 OnPropertyChanged();
             }
         }
@@ -43,11 +44,11 @@ namespace LoginModule.ViewModels
         {
             get
             {
-                return _login;
+                return login;
             }
             set
             {
-                _login = value;
+                login = value;
                 OnPropertyChanged();
             }
         }
@@ -55,24 +56,20 @@ namespace LoginModule.ViewModels
         [NotNull]
         public ICommand LoginCommand { get
         {
-            return _loginCommand ??
-                   (_loginCommand =
-                       new DelegateCommand(
-                           () =>
-                           {
-                               _regionManager.RequestNavigate("WindowRegion", new Uri("MainView", UriKind.Relative));
-                           }));
+            return loginCommand ??
+                   (loginCommand =
+                       new LoginCommand(this, container));
         }
             private set
             {
                 if (value == null) throw new ArgumentNullException("value");
-                _loginCommand = value;
+                loginCommand = value;
             }
         }
 
-        public LoginViewModel(IRegionManager regionManager)
+        public LoginViewModel(IUnityContainer container)
         {
-            _regionManager = regionManager;
+            this.container = container;
         }
 
         #region INotifyPropertyChanged

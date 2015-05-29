@@ -7,16 +7,16 @@ namespace ClientSpecificServices.ModuleDefinitions
 {
     public class Module :IModule
     {
-        private readonly IUnityContainer _container;
+        private readonly IUnityContainer container;
         public Module(IUnityContainer container)
         {
-            _container = container;
+            this.container = container;
         }
 
         public void Initialize()
         {
-            _container.RegisterType<IDispatchService, ClientDispatchService>();
-            _container.RegisterType<IChatService, ClientChatService>();
+            container.RegisterType<IDispatchService, ClientDispatchService>();
+            container.RegisterType<IClientChatService, ClientChatService>(new ContainerControlledLifetimeManager());
         }
     }
 }
